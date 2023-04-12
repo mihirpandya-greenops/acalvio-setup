@@ -14,9 +14,15 @@ read cluster_name
 
 echo "\nEnter the cluster's token generated from GreenOps: "
 read cluster_token
+
+echo "\nEnter the Postgres token provided: "
+read postgres_token
+
+echo "\nEnter the S3 token provided: "
+read s3_token
 kubectl create secret generic greenops-apikey-secret --from-literal=apikey=$cluster_token -n greenops
-kubectl create secret generic greenops-postgres --from-literal=username=postgres --from-literal=password=3a404ec6defa1f394aaec593100bfd562 -n argo
-kubectl create secret generic greenops-s3 --from-literal=accesskey=AKIAWBLFWVNFV5OW6A6O --from-literal=secretkey=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 -n argo
+kubectl create secret generic greenops-postgres --from-literal=username=postgres --from-literal=password=$postgres_token -n argo
+kubectl create secret generic greenops-s3 --from-literal=accesskey=AKIAWBLFWVNFV5OW6A6O --from-literal=secretkey=$s3_token -n argo
 
 helm repo add argo https://argoproj.github.io/argo-helm
 helm repo update argo
