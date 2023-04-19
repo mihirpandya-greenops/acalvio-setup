@@ -35,9 +35,10 @@ spec:
         apk add yq
         git clone https://{{inputs.parameters.bitbucket-username}}:$PASSWORD@{{inputs.parameters.bitbucket-url}}/{{inputs.parameters.workspace-name}}/{{inputs.parameters.repo-name}}.git
         branch_name=update-image-{{inputs.parameters.new-image-tag}}
+        cd {{inputs.parameters.repo-name}}
         git checkout -b $branch_name
         yq -i '{{inputs.parameters.variable-path}} = "{{inputs.parameters.new-image-tag}}"' {{inputs.parameters.file-path}}
         git add {{inputs.parameters.file-path}}
         git commit -m "Updating image version to {{inputs.parameters.new-image-tag}}"
         git push
-        echo $branch_name > branch-name.txt
+        echo $branch_name > /branch-name.txt
