@@ -127,7 +127,7 @@ controller:
     archiveTTL: 180d
     # # enable archiving of old workflows
     archive: true
-    clusterName: GREENOPS_CLUSTER_NAME
+    clusterName: dev
     postgresql:
       host: 34.170.43.4
       # port: 5432
