@@ -24,6 +24,7 @@ spec:
         from atlassian.bitbucket import Cloud
         import time
         import sys
+        import os
         token = os.getenv('PASSWORD')
         cloud = Cloud(url="https://api.bitbucket.org/", username="{{inputs.parameters.bitbucket-username}}", password=token)
         repo = cloud.workspaces.get('{{inputs.parameters.bitbucket-workspace}}').repositories.get('{{inputs.parameters.bitbucket-repo}}')
