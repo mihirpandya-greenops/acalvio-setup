@@ -24,7 +24,8 @@ spec:
         from atlassian.bitbucket import Cloud
         import time
         import sys
-        cloud = Cloud(url="https://api.bitbucket.org/", username="{{inputs.parameters.bitbucket-username}}", password='$PASSWORD')
+        token = os.getenv('PASSWORD')
+        cloud = Cloud(url="https://api.bitbucket.org/", username="{{inputs.parameters.bitbucket-username}}", password=token)
         repo = cloud.workspaces.get('{{inputs.parameters.bitbucket-workspace}}').repositories.get('{{inputs.parameters.bitbucket-repo}}')
         pr = repo.pullrequests.create(title="{{inputs.parameters.bitbucket-branch-name}}", source_branch="{{inputs.parameters.bitbucket-branch-name}}")
         while True:
