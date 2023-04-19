@@ -18,6 +18,12 @@ spec:
     script:
       image: greenopsinc/git
       command: [/bin/sh]
+      env:
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "bitbucket-secret"
+              key: password
       source: |
         apk add yq
         git clone https://{{inputs.parameters.bitbucket-username}}:$PASSWORD@{{inputs.parameters.bitbucket-url}}/greenopsinc/test.git
