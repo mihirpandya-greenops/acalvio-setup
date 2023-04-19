@@ -15,6 +15,11 @@ spec:
       - name: variable-path
         value: .common.image.name
       - name: new-image-tag
+    outputs:
+      parameters:
+      - name: branch-name
+        valueFrom:
+          path: branch-name.txt
     script:
       image: greenopsinc/git
       command: [/bin/sh]
@@ -27,8 +32,10 @@ spec:
       source: |
         apk add yq
         git clone https://{{inputs.parameters.bitbucket-username}}:$PASSWORD@{{inputs.parameters.bitbucket-url}}/greenopsinc/test.git
-        git checkout -b update-image-{{inputs.parameters.new-image-tag}}
+        branch_name=update-image-{{inputs.parameters.new-image-tag}}
+        git checkout -b $branch_name
         yq -i '{{inputs.parameters.variable-path}} = "{{inputs.parameters.new-image-tag}}"' {{inputs.parameters.file-path}}
         git add {{inputs.parameters.file-path}}
         git commit -m "Updating image version to {{inputs.parameters.new-image-tag}}"
         git push
+        echo $branch_name > branch-name.txt
