@@ -626,7 +626,7 @@ artifactRepository:
       key: secretkey
     # insecure will disable TLS. Primarily used for minio installs not configured with TLS
     insecure: false
-    bucket: acalvio-artifacts
+    bucket: apitopia-artifacts
     endpoint: s3.amazonaws.com
     region: us-east-2
     # roleARN:
