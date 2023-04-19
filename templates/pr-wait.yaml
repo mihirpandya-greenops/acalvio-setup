@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: pr-wait
+spec:
+  templates:
+  - name: wait-for-approval
+    inputs: 
+      parameters: 
+      - name: bitbucket-username
+      - name: bitbucket-workspace
+      - name: bitbucket-repo
+      - name: bitbucket-branch-name
+    script:
+      image: greenopsinc/atlassian
+      command: [python]
+      env:
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "bitbucket-secret"
+              key: password
+      source: |
+        from atlassian.bitbucket import Cloud
+        import time
+        import sys
+        cloud = Cloud(url="https://api.bitbucket.org/", username="{{inputs.parameters.bitbucket-username}}", password='$PASSWORD')
+        repo = cloud.workspaces.get('{{inputs.parameters.bitbucket-workspace}}').repositories.get('{{inputs.parameters.bitbucket-repo}}')
+        pr = repo.pullrequests.create(title="{{inputs.parameters.bitbucket-branch-name}}", source_branch="{{inputs.parameters.bitbucket-branch-name}}")
+        while True:
+            time.sleep(10)
+            updated_pr = repo.pullrequests.get(pr.id)
+            if updated_pr.is_merged:
+                break
+            if !updated_pr.is_open:
+                sys.exit(1)
