@@ -32,5 +32,5 @@ spec:
             updated_pr = repo.pullrequests.get(pr.id)
             if updated_pr.is_merged:
                 break
-            if !updated_pr.is_open:
+            if not updated_pr.is_open:
                 sys.exit(1)
