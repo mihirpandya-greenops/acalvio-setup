@@ -11,9 +11,12 @@ spec:
     script:
       image: google/cloud-sdk:alpine
       command: [bash]
+      volumeMounts:
+      - name: gcloud-service-account-secret
+        mountPath: "/secret"
       source: |
         apk add jq
-        gcloud auth activate-service-account --key-file key.json
+        gcloud auth activate-service-account --key-file secret/key.json
         IMAGE_TAG=$(gcloud container images list-tags {{inputs.parameters.image-tag}} --format json | jq -r '.[0] .tags[0]')
         echo $IMAGE_TAG > new_image_tag.txt
     outputs:
