@@ -12,16 +12,12 @@ spec:
         value: bitbucket.org
       - name: workspace-name
       - name: repo-name
+      - name: branch-name
       - name: file-path
         value: /folder/file/path.yaml
       - name: variable-path
         value: .common.image.name
       - name: new-image-tag
-    outputs:
-      parameters:
-      - name: branch-name
-        valueFrom:
-          path: branch-name.txt
     script:
       image: greenopsinc/git
       command: [/bin/sh]
@@ -35,11 +31,9 @@ spec:
         apk add yq
         git clone https://{{inputs.parameters.bitbucket-username}}:$PASSWORD@{{inputs.parameters.bitbucket-url}}/{{inputs.parameters.workspace-name}}/{{inputs.parameters.repo-name}}.git
         branch_name=update-image-{{inputs.parameters.new-image-tag}}
-        cd {{inputs.parameters.repo-name}}
-        git checkout -b $branch_name
+        git checkout {{inputs.parameters.branch-name}}
         yq e -i '{{inputs.parameters.variable-path}} = "{{inputs.parameters.new-image-tag}}"' {{inputs.parameters.file-path}}
         git add {{inputs.parameters.file-path}}
         git config --global user.email "greenops@greenops.io"
         git commit -m "Updating image version to {{inputs.parameters.new-image-tag}}"
-        git push --set-upstream origin $branch_name
-        echo $branch_name > /branch-name.txt
+        git push --set-upstream origin {{inputs.parameters.branch-name}}
