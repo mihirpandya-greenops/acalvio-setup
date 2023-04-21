@@ -17,6 +17,7 @@ spec:
         value: /folder/file/path.yaml
       - name: variable-path
         value: .common.image.name
+      - name: image-name
       - name: new-image-tag
     script:
       image: greenopsinc/git
@@ -32,7 +33,7 @@ spec:
         git clone https://{{inputs.parameters.bitbucket-username}}:$PASSWORD@{{inputs.parameters.bitbucket-url}}/{{inputs.parameters.workspace-name}}/{{inputs.parameters.repo-name}}.git
         cd {{inputs.parameters.repo-name}}
         git checkout {{inputs.parameters.branch-name}}
-        yq e -i '{{inputs.parameters.variable-path}} = "{{inputs.parameters.new-image-tag}}"' {{inputs.parameters.file-path}}
+        yq e -i '{{inputs.parameters.variable-path}} = "{{inputs.parameters.image-name}}:{{inputs.parameters.new-image-tag}}"' {{inputs.parameters.file-path}}
         git add {{inputs.parameters.file-path}}
         git config --global user.name "greenops"
         git config --global user.email "greenops@greenops.io"
