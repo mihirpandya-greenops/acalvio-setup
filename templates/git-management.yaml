@@ -34,6 +34,7 @@ spec:
         git checkout {{inputs.parameters.branch-name}}
         yq e -i '{{inputs.parameters.variable-path}} = "{{inputs.parameters.new-image-tag}}"' {{inputs.parameters.file-path}}
         git add {{inputs.parameters.file-path}}
+        git config --global user.name "greenops"
         git config --global user.email "greenops@greenops.io"
         git commit -m "Updating image version to {{inputs.parameters.new-image-tag}}"
         git push --set-upstream origin {{inputs.parameters.branch-name}}
