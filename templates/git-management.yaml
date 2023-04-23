@@ -29,6 +29,7 @@ spec:
               name: "bitbucket-secret"
               key: password
       source: |
+        set -euo pipefail
         apk add yq
         git clone https://{{inputs.parameters.bitbucket-username}}:$PASSWORD@{{inputs.parameters.bitbucket-url}}/{{inputs.parameters.workspace-name}}/{{inputs.parameters.repo-name}}.git
         cd {{inputs.parameters.repo-name}}
