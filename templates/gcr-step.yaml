@@ -15,6 +15,7 @@ spec:
       image: google/cloud-sdk:alpine
       command: [bash]
       source: |
+        set -euo pipefail
         apk add jq
         gcloud auth activate-service-account --key-file secret/ops-provisioner.key
         IMAGE_TAG=$(gcloud container images list-tags {{inputs.parameters.image-repo}} --format json | jq -r '.[0] .tags[0]')
