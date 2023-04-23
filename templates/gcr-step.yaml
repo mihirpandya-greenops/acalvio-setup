@@ -8,11 +8,11 @@ spec:
     inputs: 
       parameters: 
       - name: image-repo
-    volumeMounts:
-    - name: ops-key-greenops
-      mountPath: "/secret"
     script:
       image: google/cloud-sdk:alpine
+      volumeMounts:
+      - name: ops-key-greenops
+        mountPath: "/secret"
       command: [bash]
       source: |
         set -euo pipefail
